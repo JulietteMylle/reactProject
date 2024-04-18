@@ -6,7 +6,8 @@ const s = StyleSheet.create({
     },
     label: {
         alignSelf: "flex-end",
-        transform: [{ rotate: '-90deg' }]
+        transform: [{ rotate: '-90deg' }],
+        fontSize: 20,
     },
     image: {
         height: 90,
@@ -20,7 +21,7 @@ const s = StyleSheet.create({
 
     },
     temperature: {
-        fontSize: 150
+        fontSize: 100
 
     }
 });

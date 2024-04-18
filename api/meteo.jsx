@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export class MeteoAPI {
     static async fetchWeatherFromCoords(coords) {
@@ -8,6 +8,7 @@ export class MeteoAPI {
             )
         ).data;
     }
+
     static async fetchCityFromCoords(coords) {
         const {
             address: { city, village, town },
@@ -19,5 +20,18 @@ export class MeteoAPI {
         return city || village || town;
     }
 
+    static async fetchCoordsFromCity(city) {
+        try {
+            const response = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=Paris&count=1&language=fr&format=json`);
+            const results = response.data.results;
+            if (results && results.length > 0) {
+                const { latitude: lat, longitude: lng } = results[0]; 
+                return { lat, lng };
+            } else {
+                throw "La ville n'est pas trouvée";
+            }
+        } catch (error) {
+            throw "Erreur lors de la recherche de la ville";
+        }
+    }
 }
-

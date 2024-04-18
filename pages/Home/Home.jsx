@@ -1,5 +1,5 @@
 import { s } from "./Home.style";
-import { Text, View } from "react-native";
+import { Text, View, Alert } from "react-native";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 import { useEffect, useState } from "react";
 import { MeteoAPI } from "../../api/meteo";
@@ -8,6 +8,7 @@ import { getWeatherInterpretation } from "../../components/services/meteo-servic
 import { MeteoAdvanced } from "../../components/MeteoAdvanced/MeteoAdvanced";
 import { useNavigation } from "@react-navigation/native";
 import { Container } from "../../components/Container/Container";
+import { SearchBar } from "../../components/SearchBar/SearchBar";
 
 export function Home() {
     const [coords, setCoords] = useState();
@@ -46,20 +47,32 @@ export function Home() {
     }
     const nav = useNavigation();
     function goToForecastPage() {
-        nav.navigate("Forecast")
+        nav.navigate("Forecast", { city, ...weather.daily });
+    }
+
+    async function fetchCoordsFromCity (city) {
+        try {
+            const coords = await MeteoAPI.fetchCoordsFromCity(city);
+            setCoords(coords);
+        } catch (e) {
+            Alert.alert("Désolé !", e)
+        }
+        
     }
     return (
         currentWeather ?
             <Container>
                 <View style={s.meteo_basic}>
-                    <MeteoBasic
-                        temperature={Math.round(currentWeather?.temperature)}
-                        city={city}
-                        interpretation={getWeatherInterpretation(currentWeather.weathercode)}
-                        onPress={goToForecastPage}
-                    />
+                <MeteoBasic
+                temperature={Math.round(currentWeather?.temperature)}
+                city={city}
+                interpretation={getWeatherInterpretation(currentWeather.weathercode)}
+                onPress={goToForecastPage} // Pas besoin d'inclure city ici
+                />
                 </View>
-                <View style={s.searchbar}></View>
+                <View style={s.searchbar}>
+                    <SearchBar onSubmit={fetchCoordsFromCity}/>
+                </View>
                 <View style={s.meteo_advanced}>
                     <MeteoAdvanced
                         dusk={weather.daily.sunrise[0].split("T")[1]}

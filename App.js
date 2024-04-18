@@ -2,14 +2,13 @@ import { Home } from "./pages/Home/Home";
 import { Forecast } from "./pages/Forecast/Forecast";
 
 import { s } from "./App.style";
-
 import AlataRegular from "./assets/fonts/Alata-Regular.ttf"
-import * as Font from "expo-font";
+import {useFonts} from "expo-font";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, createStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
-  const [isFontLoaded] = Font.useFonts({
+  const [isFontLoaded] = useFonts({
     "Alata-Regular": AlataRegular,
   });
   const Stack = createNativeStackNavigator();
