@@ -6,6 +6,8 @@ import { MeteoAPI } from "../../api/meteo";
 import { MeteoBasic } from "../../components/MeteoBasic/MeteoBasic";
 import { getWeatherInterpretation } from "../../components/services/meteo-service";
 import { MeteoAdvanced } from "../../components/MeteoAdvanced/MeteoAdvanced";
+import { useNavigation } from "@react-navigation/native";
+import { Container } from "../../components/Container/Container";
 
 export function Home() {
     const [coords, setCoords] = useState();
@@ -42,14 +44,19 @@ export function Home() {
         const cityResponse = await MeteoAPI.fetchCityFromCoords(coordinates);
         setCity(cityResponse);
     }
+    const nav = useNavigation();
+    function goToForecastPage() {
+        nav.navigate("Forecast")
+    }
     return (
         currentWeather ?
-            <>
+            <Container>
                 <View style={s.meteo_basic}>
                     <MeteoBasic
                         temperature={Math.round(currentWeather?.temperature)}
                         city={city}
                         interpretation={getWeatherInterpretation(currentWeather.weathercode)}
+                        onPress={goToForecastPage}
                     />
                 </View>
                 <View style={s.searchbar}></View>
@@ -60,7 +67,7 @@ export function Home() {
                         wind={weather.current_weather.windspeed}
                     />
                 </View>
-            </>
+            </Container>
             : null
     )
 }

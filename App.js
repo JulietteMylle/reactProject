@@ -1,23 +1,33 @@
 import { Home } from "./pages/Home/Home";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import { Forecast } from "./pages/Forecast/Forecast";
+
 import { s } from "./App.style";
-import { ImageBackground } from "react-native";
-import fond from "./assets/fond.jpg";
+
 import AlataRegular from "./assets/fonts/Alata-Regular.ttf"
 import * as Font from "expo-font";
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator, createStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
   const [isFontLoaded] = Font.useFonts({
     "Alata-Regular": AlataRegular,
-  }); console.log(isFontLoaded);
+  });
+  const Stack = createNativeStackNavigator();
+  const navTheme = {
+    colors: {
+      background: "transparent",
+    },
+  };
+
   return (
-    <ImageBackground source={fond} style={s.img_background} imageStyle={s.img}>
-      <SafeAreaProvider>
-        <SafeAreaView style={s.container}>
-          {isFontLoaded ? <Home /> : null}
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </ImageBackground>
+    <NavigationContainer theme={navTheme}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="Home"
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Forecast" component={Forecast} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
