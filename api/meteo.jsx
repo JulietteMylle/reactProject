@@ -21,17 +21,17 @@ export class MeteoAPI {
     }
 
     static async fetchCoordsFromCity(city) {
+        console.log("Hey", city)
         try {
-            const response = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=Paris&count=1&language=fr&format=json`);
-            const results = response.data.results;
-            if (results && results.length > 0) {
-                const { latitude: lat, longitude: lng } = results[0]; 
-                return { lat, lng };
-            } else {
-                throw "La ville n'est pas trouvée";
-            }
+            const response = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`);
+            const { latitude: lat, longitude: lng } = response.data.results[0];
+            return { lat, lng };
         } catch (error) {
-            throw "Erreur lors de la recherche de la ville";
+            throw "La ville n'est pas trouvée";
         }
+
+
+
+
     }
 }

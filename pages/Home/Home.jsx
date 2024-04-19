@@ -50,28 +50,29 @@ export function Home() {
         nav.navigate("Forecast", { city, ...weather.daily });
     }
 
-    async function fetchCoordsFromCity (city) {
+    async function fetchCoordsFromCity(city) {
+
         try {
             const coords = await MeteoAPI.fetchCoordsFromCity(city);
             setCoords(coords);
         } catch (e) {
             Alert.alert("Désolé !", e)
         }
-        
+
     }
     return (
         currentWeather ?
             <Container>
                 <View style={s.meteo_basic}>
-                <MeteoBasic
-                temperature={Math.round(currentWeather?.temperature)}
-                city={city}
-                interpretation={getWeatherInterpretation(currentWeather.weathercode)}
-                onPress={goToForecastPage} // Pas besoin d'inclure city ici
-                />
+                    <MeteoBasic
+                        temperature={Math.round(currentWeather?.temperature)}
+                        city={city}
+                        interpretation={getWeatherInterpretation(currentWeather.weathercode)}
+                        onPress={goToForecastPage} // Pas besoin d'inclure city ici
+                    />
                 </View>
                 <View style={s.searchbar}>
-                    <SearchBar onSubmit={fetchCoordsFromCity}/>
+                    <SearchBar onSubmit={fetchCoordsFromCity} />
                 </View>
                 <View style={s.meteo_advanced}>
                     <MeteoAdvanced

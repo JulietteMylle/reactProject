@@ -3,7 +3,7 @@ import { Forecast } from "./pages/Forecast/Forecast";
 
 import { s } from "./App.style";
 import AlataRegular from "./assets/fonts/Alata-Regular.ttf"
-import {useFonts} from "expo-font";
+import { useFonts } from "expo-font";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, createStackNavigator } from '@react-navigation/native-stack';
 
